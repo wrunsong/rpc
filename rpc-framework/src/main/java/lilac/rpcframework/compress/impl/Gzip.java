@@ -13,7 +13,7 @@ import java.util.zip.GZIPOutputStream;
 @Slf4j
 public class Gzip implements Compress {
 
-    @Value("${lilac.rpc.compress.gzip.buffer.size}")
+    @Value("${lilac.rpc.compress.buffer.size}")
     private static int BUFFER_SIZE;
 
     @Override

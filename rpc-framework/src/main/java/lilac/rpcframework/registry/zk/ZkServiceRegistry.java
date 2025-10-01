@@ -1,6 +1,5 @@
 package lilac.rpcframework.registry.zk;
 
-import lilac.rpcframework.enums.LoadBalanceType;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.loadbalance.LoadBalance;
 import lilac.rpcframework.registry.ServiceRegistry;
@@ -20,11 +19,14 @@ public class ZkServiceRegistry implements ServiceRegistry {
 
     private final LoadBalance loadBalance;
     @Value("${lilac.rpc.server.port:8080}")
-    private int SERVER_PORT;
+    private static int SERVER_PORT;
+
+    @Value("${lilac.rpc.loadbalance.type:consistentHash}")
+    private static String loadBalanceType;
 
     public ZkServiceRegistry() {
         this.loadBalance = Objects.requireNonNull(ExtensionLoader.getExtensionLoader(LoadBalance.class))
-                .getExtension(LoadBalanceType.LOAD_BALANCE.getName());
+                .getExtension(loadBalanceType);
     }
 
     /**

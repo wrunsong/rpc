@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ServiceRegistryType {
 
-    REGISTRY("registry"),
+    ZK("zookeeper"),
     NACOS("nacos");
 
     private final String type;

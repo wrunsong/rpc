@@ -1,7 +1,6 @@
 package lilac.rpcframework.provider.impl;
 
 import lilac.rpcframework.config.RpcServiceConfig;
-import lilac.rpcframework.enums.ServiceRegistryType;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.registry.ServiceRegistry;
@@ -22,11 +21,13 @@ public class ZkServiceProvider implements ServiceProvider {
 
     @Value("${lilac.rpc.server.port:8080}")
     private static int port;
+    @Value("${lilac.rpc.registry.type:zookeeper}")
+    private static String registryType;
 
     public ZkServiceProvider() {
         this.SERVICE_MAP = new ConcurrentHashMap<>();
         this.serviceRegistry = Objects.requireNonNull(ExtensionLoader.getExtensionLoader(ServiceRegistry.class))
-                .getExtension(ServiceRegistryType.REGISTRY.getType());
+                .getExtension(registryType);
     }
 
     /**

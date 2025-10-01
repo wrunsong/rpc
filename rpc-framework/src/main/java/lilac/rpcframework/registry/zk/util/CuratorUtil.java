@@ -24,13 +24,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class CuratorUtil {
-    @Value("${lilac.rpc.zk.base.sleep.time:3000}")
+    @Value("${lilac.rpc.registry.base.sleep.time:3000}")
     private static int BASE_SLEEP_TIME;
-    @Value("${lilac.rpc.zk.max.retries:3}")
+    @Value("${lilac.rpc.registry.max.retries:3}")
     private static int MAX_RETRIES;
-    @Value("${lilac.rpc.zk.registry.root.path:/lilac-rpc}")
+    @Value("${lilac.rpc.registry.registry.root.path:/lilac-rpc}")
     private static String ZK_REGISTER_ROOT_PATH;
-    @Value("${lilac.rpc.zk.address}")
+    @Value("${lilac.rpc.registry.address}")
     private static String ZOOKEEPER_ADDRESS;
     // serviceName -> addresses
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();

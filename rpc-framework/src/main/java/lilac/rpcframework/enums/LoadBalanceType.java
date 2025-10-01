@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum LoadBalanceType {
     // TODO 改成具体的负载均衡名称
-    LOAD_BALANCE("loadbalance");
+    CONSISTENT_HASH("consistentHash"),;
 
     private final String name;
 }

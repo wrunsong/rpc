@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 public class RpcResponse<T> implements Serializable {
+    @Serial
     private static final long serialVersionUID = 715745410605631233L;
     private String requestId;
     /**

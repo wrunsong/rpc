@@ -15,12 +15,21 @@ public enum SerializationType {
     private final byte code;
     private final String type;
 
-    public static String getType(byte code) {
+    public static String getTypeByCode(byte code) {
         for (SerializationType type : SerializationType.values()) {
             if (type.getCode() == code) {
                 return type.getType();
             }
         }
         return null;
+    }
+
+    public static byte getCodeByType(String type) {
+        for (SerializationType serializationType : SerializationType.values()) {
+            if (serializationType.getType().equals(type)) {
+                return serializationType.getCode();
+            }
+        }
+        return 0;
     }
 }

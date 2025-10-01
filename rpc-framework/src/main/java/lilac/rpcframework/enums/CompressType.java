@@ -20,4 +20,13 @@ public enum CompressType {
         }
         return null;
     }
+
+    public static byte getCodeByName(String name) {
+        for (CompressType compressType : CompressType.values()) {
+            if (compressType.name.equals(name)) {
+                return compressType.code;
+            }
+        }
+        return 0;
+    }
 }
