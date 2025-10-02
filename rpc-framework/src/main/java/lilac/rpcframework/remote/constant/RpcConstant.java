@@ -10,7 +10,6 @@ public class RpcConstant {
 
     // Version information
     public static final byte[] VERSION = {(byte) 'v', (byte) '1'};
-    public static final byte TOTAL_LENGTH = 21;
     public static final byte REQUEST_TYPE = 1;
     public static final byte RESPONSE_TYPE = 2;
     // ping
