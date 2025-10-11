@@ -1,6 +1,7 @@
 package lilac.rpcframework.registry.zk.util;
 
 
+import lilac.rpcframework.constants.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -9,7 +10,6 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -24,14 +24,11 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class CuratorUtil {
-    @Value("${lilac.rpc.registry.base.sleep.time:3000}")
-    private static int BASE_SLEEP_TIME;
-    @Value("${lilac.rpc.registry.max.retries:3}")
-    private static int MAX_RETRIES;
-    @Value("${lilac.rpc.registry.registry.root.path:/lilac-rpc}")
-    private static String ZK_REGISTER_ROOT_PATH;
-    @Value("${lilac.rpc.registry.address}")
-    private static String ZOOKEEPER_ADDRESS;
+
+    private static final int BASE_SLEEP_TIME = Constants.BASE_SLEEP_TIME;
+    private static final int MAX_RETRIES = Constants.MAX_RETRIES;
+    private static final String ZK_REGISTER_ROOT_PATH = Constants.ZOOKEEPER_ROOT_PATH;
+    private static final String ZOOKEEPER_ADDRESS = Constants.ZOOKEEPER_ADDRESS;
     // serviceName -> addresses
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     // full zk path
@@ -51,12 +48,10 @@ public class CuratorUtil {
             return zkClient;
         }
 
-        String zkAddress = ZOOKEEPER_ADDRESS;
-
         ExponentialBackoffRetry policy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
 
         zkClient = CuratorFrameworkFactory.builder()
-                .connectString(zkAddress)
+                .connectString(ZOOKEEPER_ADDRESS)
                 .retryPolicy(policy)
                 .build();
         zkClient.start();

@@ -6,6 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.factory.SingletonFactory;
@@ -14,7 +15,6 @@ import lilac.rpcframework.remote.dto.RpcRequest;
 import lilac.rpcframework.remote.dto.RpcResponse;
 import lilac.rpcframework.remote.handler.RpcRequestHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import static lilac.rpcframework.remote.constant.RpcConstant.*;
 
@@ -24,12 +24,10 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
     private final RpcRequestHandler requestHandler;
     private int idleCounter = 0;
 
-    @Value("${lilac.rpc.max.idle.times:1}")
-    private static int MAX_IDLE_TIMES;
-    @Value("${lilac.rpc.serialize.type:Hessian}")
-    private static String codecType;
-    @Value("${lilac.rpc.compress.type:gzip}")
-    private static String compressType;
+
+    private static final int MAX_IDLE_TIMES = Constants.MAX_IDLE_TIMES;
+    private static final String codecType = Constants.CODEC_TYPE;
+    private static final String compressType = Constants.COMPRESS_TYPE;
 
     public NettyRpcServerHandler() {
         this.requestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);
@@ -37,6 +35,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        log.debug("receive rpc message from client {}", ctx.channel().remoteAddress());
         try {
             if (msg instanceof RpcMessage) {
                 byte messageType = ((RpcMessage) msg).getMessageType();
@@ -79,7 +78,7 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
             if (state == IdleState.READER_IDLE) {
                 idleCounter++;
                 if (idleCounter > MAX_IDLE_TIMES) {
-                    log.info("idle check happen more than max times, so close the connection");
+                    log.debug("idle check happen more than max times, so close the connection");
                     ctx.close();
                 }
             }

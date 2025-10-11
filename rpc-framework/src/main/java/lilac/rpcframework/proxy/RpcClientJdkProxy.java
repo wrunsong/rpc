@@ -5,7 +5,7 @@ import lilac.rpcframework.enums.RpcErrorMessage;
 import lilac.rpcframework.enums.RpcResponseCode;
 import lilac.rpcframework.remote.dto.RpcRequest;
 import lilac.rpcframework.remote.dto.RpcResponse;
-import lilac.rpcframework.remote.transport.netty.client.NettyClient;
+import lilac.rpcframework.remote.transport.netty.client.NettyRpcClient;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
@@ -17,13 +17,13 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class RpcClientJdkProxy implements InvocationHandler, RpcClientProxy {
 
-    private NettyClient nettyClient;
+    private NettyRpcClient nettyRpcClient;
     private RpcServiceConfig rpcServiceConfig;
 
 
     @Override
-    public void setClient(NettyClient nettyClient, RpcServiceConfig rpcServiceConfig) {
-        this.nettyClient = nettyClient;
+    public void setClient(NettyRpcClient nettyRpcClient, RpcServiceConfig rpcServiceConfig) {
+        this.nettyRpcClient = nettyRpcClient;
         this.rpcServiceConfig = rpcServiceConfig;
     }
 
@@ -43,7 +43,7 @@ public class RpcClientJdkProxy implements InvocationHandler, RpcClientProxy {
 
         RpcRequest rpcRequest = getRpcRequest(method, args);
 
-        CompletableFuture<RpcResponse<Object>> future = nettyClient.sendRpcRequest(rpcRequest);
+        CompletableFuture<RpcResponse<Object>> future = nettyRpcClient.sendRpcRequest(rpcRequest);
 
         RpcResponse<Object> rpcResponse = future.join();
 

@@ -1,17 +1,15 @@
 package lilac.rpcframework.remote.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 @ToString
+@NoArgsConstructor
 public class RpcRequest implements Serializable {
 
     @Serial
@@ -27,9 +25,9 @@ public class RpcRequest implements Serializable {
     private String group;
 
     public String getRpcServiceName() {
-        return this.getInterfaceName() + ": "
-                + "-group: " +  this.getGroup()
-                + "-version: " + this.getVersion();
+        return this.getInterfaceName() + ":"
+                + "group:" +  this.getGroup()
+                + ",version:" + this.getVersion();
     }
 
 

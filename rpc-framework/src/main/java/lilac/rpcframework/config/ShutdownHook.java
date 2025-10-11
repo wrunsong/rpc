@@ -1,9 +1,9 @@
 package lilac.rpcframework.config;
 
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.registry.ServiceRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Objects;
 
@@ -13,8 +13,7 @@ public class ShutdownHook {
     private static volatile ShutdownHook shutdownHook = null;
     private final ServiceRegistry serviceRegistry;
 
-    @Value("${lilac.rpc.registry.type:zookeeper}")
-    private static String registryType;
+    private static final String registryType = Constants.REGISTRY_TYPE;
 
     private ShutdownHook() {
         this.serviceRegistry = Objects.requireNonNull(ExtensionLoader.getExtensionLoader(ServiceRegistry.class))

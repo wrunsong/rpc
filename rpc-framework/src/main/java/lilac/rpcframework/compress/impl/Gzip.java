@@ -1,8 +1,8 @@
 package lilac.rpcframework.compress.impl;
 
 import lilac.rpcframework.compress.Compress;
+import lilac.rpcframework.constants.Constants;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,8 +13,7 @@ import java.util.zip.GZIPOutputStream;
 @Slf4j
 public class Gzip implements Compress {
 
-    @Value("${lilac.rpc.compress.buffer.size}")
-    private static int BUFFER_SIZE;
+    private static final int BUFFER_SIZE = Constants.BUFFER_SIZE;
 
     @Override
     public byte[] compress(byte[] bytes) {

@@ -7,7 +7,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import lilac.rpcframework.config.ShutdownHook;
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.remote.transport.netty.codec.RpcMessageDecoder;
@@ -15,21 +17,18 @@ import lilac.rpcframework.remote.transport.netty.codec.RpcMessageEncoder;
 import lilac.rpcframework.remote.transport.netty.server.handler.NettyRpcServerHandler;
 import lilac.rpcframework.utils.threadpool.ThreadPoolFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class NettyServer {
+public class NettyRpcServer {
 
-    @Value("${lilac.rpc.server.port:8080}")
-    private static int PORT;
-
-    @Value("${lilac.rpc.registry.type:zookeeper}")
-    private static String registryType;
+    private static final int PORT = Constants.SERVER_PORT;
+    private static final String registryType = Constants.REGISTRY_TYPE;
 
     private final ServiceProvider serviceProvider = Objects.requireNonNull(
             ExtensionLoader.getExtensionLoader(ServiceProvider.class)).getExtension(registryType);
@@ -62,6 +61,7 @@ public class NettyServer {
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
 
+                            pipeline.addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
                             pipeline.addLast(new RpcMessageEncoder());
                             pipeline.addLast(new RpcMessageDecoder());
                             pipeline.addLast(handlerGroup, new NettyRpcServerHandler());

@@ -1,5 +1,6 @@
 package lilac.rpcframework.registry.zk;
 
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.loadbalance.LoadBalance;
 import lilac.rpcframework.registry.ServiceRegistry;
@@ -7,7 +8,6 @@ import lilac.rpcframework.registry.zk.util.CuratorUtil;
 import lilac.rpcframework.remote.dto.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -18,11 +18,10 @@ import java.util.Objects;
 public class ZkServiceRegistry implements ServiceRegistry {
 
     private final LoadBalance loadBalance;
-    @Value("${lilac.rpc.server.port:8080}")
-    private static int SERVER_PORT;
+    private int SERVER_PORT = Constants.SERVER_PORT;
 
-    @Value("${lilac.rpc.loadbalance.type:consistentHash}")
-    private static String loadBalanceType;
+
+    private static final String loadBalanceType = Constants.LOAD_BALANCE_TYPE;
 
     public ZkServiceRegistry() {
         this.loadBalance = Objects.requireNonNull(ExtensionLoader.getExtensionLoader(LoadBalance.class))
@@ -37,7 +36,7 @@ public class ZkServiceRegistry implements ServiceRegistry {
     @Override
     public void register(String rpcServiceName, InetSocketAddress inetSocketAddress) {
         CuratorFramework zkClient = CuratorUtil.getZkClient();
-        CuratorUtil.createPersistentNode(zkClient,  rpcServiceName + "-" + inetSocketAddress.toString());
+        CuratorUtil.createPersistentNode(zkClient,  rpcServiceName + inetSocketAddress.toString());
     }
 
 

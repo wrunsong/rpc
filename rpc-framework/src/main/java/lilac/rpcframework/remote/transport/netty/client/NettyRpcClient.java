@@ -7,6 +7,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.extension.ExtensionLoader;
@@ -20,29 +22,27 @@ import lilac.rpcframework.remote.transport.netty.client.utils.UnProcessedRequest
 import lilac.rpcframework.remote.transport.netty.codec.RpcMessageDecoder;
 import lilac.rpcframework.remote.transport.netty.codec.RpcMessageEncoder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetSocketAddress;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import static lilac.rpcframework.remote.constant.RpcConstant.REQUEST_TYPE;
 
 @Slf4j
-public class NettyClient {
+public class NettyRpcClient {
 
     private final ServiceRegistry registry;
     private final Bootstrap bootstrap;
     private final EventLoopGroup eventLoopGroup;
 
-    @Value("${lilac.rpc.registry.type:zookeeper}")
-    private static String registryType;
-    @Value("${lilac.rpc.serialize.type:Hessian}")
-    private static String codecType;
-    @Value("${lilac.rpc.compress.type:gzip}")
-    private static String compressType;
 
-    public NettyClient() {
+    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final String codecType = Constants.CODEC_TYPE;
+    private static final String compressType = Constants.COMPRESS_TYPE;
+
+    public NettyRpcClient() {
 
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
@@ -54,6 +54,8 @@ public class NettyClient {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
+
+                        pipeline.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
 
                         pipeline.addLast(new RpcMessageEncoder());
                         pipeline.addLast(new RpcMessageDecoder());
@@ -123,6 +125,14 @@ public class NettyClient {
                         .build();
                 channel.writeAndFlush(rpcMessage).addListener((ChannelFutureListener) future -> {
                     if (future.isSuccess()) {
+                        log.info("send rpc request success");
+                        // 启动超时定时任务
+                        future.channel().eventLoop().schedule(() -> {
+                            if (!responseFuture.isDone()) {
+                                UnProcessedRequests.remove(request.getRequestId()); // 超时后移除未处理请求
+                                log.warn("RPC request timeout, requestId: {}", request.getRequestId());
+                            }
+                        }, 5, TimeUnit.SECONDS);
 
                     } else {
                         log.error("Construct channel error: {}", future.cause().getMessage());

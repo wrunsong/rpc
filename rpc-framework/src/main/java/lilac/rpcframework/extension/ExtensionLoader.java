@@ -14,8 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class ExtensionLoader<T> {
 
-    // 该目录下的文件存放的是各个支持SPI机制的类的配置文件
-    private static final String EXTENSION_DIRECTORY = "src/main/resources/extensions";
+    // 该目录下的文件存放的是各个支持SPI机制的类的配置文件，路径是相对resources目录的路径
+    private static final String EXTENSION_DIRECTORY = "extensions";
     // interface -> extension_loader
     private static final Map<Class<?>, ExtensionLoader<?>> EXTENSION_LOADERS = new ConcurrentHashMap<>();
     // class which implemented interface -> object of class

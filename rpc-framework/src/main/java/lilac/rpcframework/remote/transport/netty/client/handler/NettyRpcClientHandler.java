@@ -7,6 +7,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.remote.dto.RpcMessage;
@@ -14,7 +15,6 @@ import lilac.rpcframework.remote.dto.RpcResponse;
 import lilac.rpcframework.remote.transport.netty.client.utils.ChannelProvider;
 import lilac.rpcframework.remote.transport.netty.client.utils.UnProcessedRequests;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetSocketAddress;
 
@@ -23,13 +23,12 @@ import static lilac.rpcframework.remote.constant.RpcConstant.*;
 @Slf4j
 public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
 
-    @Value("${lilac.rpc.compress.type:gzip}")
-    private static String compressType;
-    @Value("${lilac.rpc.serialize.type:Hessian}")
-    private static String codecType;
+    private static final String compressType = Constants.COMPRESS_TYPE;
+    private static final String codecType = Constants.CODEC_TYPE;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        log.debug("channelRead, msg: {}", msg);
         try {
             if (msg instanceof RpcMessage rpcMessage) {
                 byte messageType = rpcMessage.getMessageType();
@@ -47,6 +46,7 @@ public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        log.debug("userEventTriggered, evt: {}", evt);
         if (evt instanceof IdleStateEvent event) {
             if (event.state() == IdleState.WRITER_IDLE) {
                 Channel channel = ChannelProvider.getChannel((InetSocketAddress) ctx.channel().remoteAddress());

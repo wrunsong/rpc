@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 设置根日志级别为 debug（低于 info，会输出 debug 及以上级别日志） -->
+    <root level="info">
+        <appender-ref ref="STDOUT" /> <!-- 输出到控制台 -->
+    </root>
+</configuration>

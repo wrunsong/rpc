@@ -28,7 +28,7 @@ import static lilac.rpcframework.remote.constant.RpcConstant.*;
  *  *   |                                        ... ...                                                        |
  *  *   +-------------------------------------------------------------------------------------------------------+
  *  * 8B  magic code（魔法数）   2B version（版本）   4B full length（消息长度）    1B messageType（消息类型）
- *  * 1B compress（压缩类型） 1B codec（序列化类型）    4B  requestId（请求的Id）
+ *  * 1B codec（序列化类型）      1B compress（压缩类型）   4B  requestId（请求的Id）
  *  * body（object类型数据）
  */
 
@@ -51,6 +51,11 @@ public class RpcMessageDecoder extends LengthFieldBasedFrameDecoder {
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         // 父类的decode方法只做切包，上面构造方法给的参数就是避免粘包的
         Object decodedBuf = super.decode(ctx, in);
+
+        if (decodedBuf == null) {
+            log.error("decoded buf is null");
+            return null;
+        }
 
         if (decodedBuf instanceof ByteBuf frame) {
             if (frame.readableBytes() >= HEAD_LENGTH) {
@@ -79,8 +84,8 @@ public class RpcMessageDecoder extends LengthFieldBasedFrameDecoder {
 
         int fullLength = in.readInt();
         byte messageType = in.readByte();
-        byte compressCode = in.readByte();
         byte codecCode = in.readByte();
+        byte compressCode = in.readByte();
         int requestId = in.readInt();
 
         RpcMessage rpcMessage = RpcMessage.builder()

@@ -3,14 +3,14 @@ package lilac.rpcframework.spring;
 import lilac.rpcframework.annotations.RpcReference;
 import lilac.rpcframework.annotations.RpcService;
 import lilac.rpcframework.config.RpcServiceConfig;
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.factory.SingletonFactory;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.proxy.RpcClientProxy;
-import lilac.rpcframework.remote.transport.netty.client.NettyClient;
+import lilac.rpcframework.remote.transport.netty.client.NettyRpcClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +22,15 @@ import java.util.Objects;
 public class SpringBeanPostProcess implements BeanPostProcessor {
 
     private final ServiceProvider serviceProvider;
-    private final NettyClient nettyClient;
+    private final NettyRpcClient nettyRpcClient;
 
-    @Value("${lilac.rpc.registry.type:zookeeper}")
-    private static String registryType;
-    @Value("${lilac.rpc.proxy.type:jdk}")
-    private static String proxyType;
+    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final String proxyType = Constants.PROXY_TYPE;
 
     public SpringBeanPostProcess() {
         this.serviceProvider = Objects.requireNonNull(
                 ExtensionLoader.getExtensionLoader(ServiceProvider.class)).getExtension(registryType);
-        this.nettyClient = SingletonFactory.getInstance(NettyClient.class);
+        this.nettyRpcClient = SingletonFactory.getInstance(NettyRpcClient.class);
     }
 
     /**
@@ -81,7 +79,7 @@ public class SpringBeanPostProcess implements BeanPostProcessor {
                 RpcClientProxy rpcClientProxy = Objects.requireNonNull(
                         ExtensionLoader.getExtensionLoader(RpcClientProxy.class)).getExtension(proxyType);
 
-                rpcClientProxy.setClient(nettyClient, rpcServiceConfig);
+                rpcClientProxy.setClient(nettyRpcClient, rpcServiceConfig);
 
                 Object proxy = rpcClientProxy.getProxy(field.getType());
                 field.setAccessible(true);

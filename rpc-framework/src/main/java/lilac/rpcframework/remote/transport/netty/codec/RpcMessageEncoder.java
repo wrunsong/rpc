@@ -5,12 +5,12 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lilac.rpcframework.compress.Compress;
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.remote.dto.RpcMessage;
 import lilac.rpcframework.serialize.Serializer;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,15 +27,14 @@ import static lilac.rpcframework.remote.constant.RpcConstant.*;
  *  *   |                                        ... ...                                                        |
  *  *   +-------------------------------------------------------------------------------------------------------+
  *  * 8B  magic code（魔法数）   2B version（版本）   4B full length（消息长度）    1B messageType（消息类型）
- *  * 1B compress（压缩类型） 1B codec（序列化类型）    4B  requestId（请求的Id）
+ *  * 1B codec（序列化类型） 1B compress（压缩类型）   4B  requestId（请求的Id）
  *  * body（object类型数据）
  */
 
 public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
     private static final AtomicInteger MESSAGE_COUNTER = new AtomicInteger(0);
 
-    @Value("${lilac.rpc.compress.type:gzip}")
-    private static String compressType;
+    private static final String compressType = Constants.COMPRESS_TYPE;
 
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, RpcMessage rpcMessage, ByteBuf byteBuf) throws Exception {
@@ -46,7 +45,6 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
 
         byteBuf.writeByte(rpcMessage.getMessageType());
         byteBuf.writeByte(rpcMessage.getCodec());
-        // 这样能确保报文格式一致，不然不同的压缩方式直接从字符串变成字节数组会导致长度不确定
         byteBuf.writeByte(CompressType.getCodeByName(compressType));
         byteBuf.writeInt(MESSAGE_COUNTER.incrementAndGet());
         byte[] requestBody = null;
@@ -69,7 +67,7 @@ public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
         }
 
         int writerIndex = byteBuf.writerIndex();
-        byteBuf.writerIndex(writerIndex - fullLength + MAGIC_NUM.length + 1);
+        byteBuf.writerIndex(writerIndex - fullLength + MAGIC_NUM.length + VERSION.length);
         byteBuf.writeInt(fullLength);
         byteBuf.writerIndex(writerIndex);
     }

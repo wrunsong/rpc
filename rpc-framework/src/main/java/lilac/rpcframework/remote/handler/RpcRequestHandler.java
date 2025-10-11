@@ -1,10 +1,10 @@
 package lilac.rpcframework.remote.handler;
 
+import lilac.rpcframework.constants.Constants;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.remote.dto.RpcRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -14,8 +14,7 @@ public class RpcRequestHandler {
 
     private final ServiceProvider serviceProvider;
 
-    @Value("${lilac.rpc.registry.type:zookeeper}")
-    private static String registryType;
+    private static final String registryType = Constants.REGISTRY_TYPE;
 
     public RpcRequestHandler() {
         this.serviceProvider = Objects.requireNonNull(
