@@ -24,7 +24,6 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
     private final RpcRequestHandler requestHandler;
     private int idleCounter = 0;
 
-
     private static final int MAX_IDLE_TIMES = Constants.MAX_IDLE_TIMES;
     private static final String codecType = Constants.CODEC_TYPE;
     private static final String compressType = Constants.COMPRESS_TYPE;

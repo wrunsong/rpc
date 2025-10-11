@@ -9,7 +9,7 @@
 
 TODO List:
 1. 钩子没发挥作用  ✅
-2. client和server 与spring集成
+2. client和server 与spring集成 ✅
 3. 熔断
 4. 降级
 5. nacos
@@ -19,3 +19,9 @@ TODO List:
 9. 用netty的零拷贝，如transferTo等方法
 10. 用cglib做代理
 11. 用yaml配置，不用Constans配置
+12. protobuf序列化方式
+
+技术点<br>
+1. 服务端注册了一个zk的钩子程序，在服务端结束时(@PreDestroy)会自动清除zk上自己的IP地址；
+2. 服务端只要启动springboot服务，就能自动启动rpc服务器(RpcServerAutoStarter)、客户端只要启动springboot服务，需要由rpc调用的接口就自动被代理bean替换(SpringBeanPostProcess)；
+3. ...
