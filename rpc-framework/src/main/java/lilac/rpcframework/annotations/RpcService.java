@@ -13,4 +13,7 @@ public @interface RpcService {
     String version() default "v1";
 
     String group() default "lilac";
+
+    // 暴露到zk上的服务名称
+    String exposeName() default "";
 }

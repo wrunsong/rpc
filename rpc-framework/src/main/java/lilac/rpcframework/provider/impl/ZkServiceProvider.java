@@ -36,7 +36,7 @@ public class ZkServiceProvider implements ServiceProvider {
     @Override
     public void addService(RpcServiceConfig config) {
 
-        String rpcServiceName = config.getRpcServiceName();
+        String rpcServiceName = config.getFullyExposeName();
         if (SERVICE_MAP.containsKey(rpcServiceName)) {
             return;
         }
@@ -68,7 +68,7 @@ public class ZkServiceProvider implements ServiceProvider {
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
             this.addService(config);
-            serviceRegistry.register(config.getRpcServiceName(), new InetSocketAddress(host, port));
+            serviceRegistry.register(config.getFullyExposeName(), new InetSocketAddress(host, port));
         } catch (Exception e) {
             log.error("publish service error: {}", e.getMessage());
         }
