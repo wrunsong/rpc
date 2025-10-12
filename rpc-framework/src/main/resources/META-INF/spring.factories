@@ -1,0 +1,1 @@
+org.springframework.boot.SpringApplicationRunListener=lilac.rpcframework.config.yaml.listener.RpcFrameworkRunListener

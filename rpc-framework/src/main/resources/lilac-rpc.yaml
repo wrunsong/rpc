@@ -1,0 +1,22 @@
+lilac-rpc:
+  registry:
+    type: zk
+    address: 127.0.0.1:2181
+    base-sleep-time: 3000
+    max-retries: 3
+    zk:
+      path: /lilac-rpc
+  compress:
+    type: gzip
+    buffer-size: 4096
+  codec:
+    type: hessian
+  loadbalance:
+    type: consistentHash
+  server-port: 1018
+  max-idle-time: 1
+  server-address: 127.0.0.1
+
+
+
+
