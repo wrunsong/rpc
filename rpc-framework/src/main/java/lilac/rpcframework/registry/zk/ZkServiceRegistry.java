@@ -47,7 +47,7 @@ public class ZkServiceRegistry implements ServiceRegistry {
      */
     @Override
     public InetSocketAddress lookupService(RpcRequest request) {
-        String rpcServiceName = request.getRpcServiceName();
+        String rpcServiceName = request.getFullyExposeName();
 
         CuratorFramework zkClient = CuratorUtil.getZkClient();
         List<String> addresses = CuratorUtil.getChildrenNodes(zkClient, rpcServiceName);

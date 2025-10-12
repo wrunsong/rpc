@@ -13,4 +13,6 @@ public @interface RpcReference {
     String version() default "v1";
 
     String group() default "lilac";
+
+    String exposeName() default "";
 }

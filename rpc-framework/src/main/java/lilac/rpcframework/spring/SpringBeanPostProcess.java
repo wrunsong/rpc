@@ -25,7 +25,6 @@ public class SpringBeanPostProcess implements BeanPostProcessor {
     private final NettyRpcClient nettyRpcClient;
 
     private static final String registryType = Constants.REGISTRY_TYPE;
-    private static final String proxyType = Constants.PROXY_TYPE;
 
     public SpringBeanPostProcess() {
         this.serviceProvider = Objects.requireNonNull(
@@ -52,6 +51,18 @@ public class SpringBeanPostProcess implements BeanPostProcessor {
                     .service(bean)
                     .build();
 
+
+            if (rpcService.exposeName() != null && !rpcService.exposeName().isEmpty()) {
+                // 在RpcService注解中指定了明确的注册名称
+                rpcServiceConfig.setFullyExposeName(rpcService.exposeName());
+            } else if (bean.getClass().getInterfaces().length > 0) {
+                // 未在RpcService注解中指定明确的注册名称，则默认用实现的第一个接口名称
+                rpcServiceConfig.setFullyExposeName(bean.getClass().getInterfaces()[0].getSimpleName());
+            } else {
+                // 既没有指定注册名称，也没有实现接口，就用提供服务的类名作为注册名称
+                rpcServiceConfig.setFullyExposeName(bean.getClass().getSimpleName());
+            }
+
             serviceProvider.publishService(rpcServiceConfig);
         }
         return bean;
@@ -76,6 +87,16 @@ public class SpringBeanPostProcess implements BeanPostProcessor {
                         .version(rpcReference.version())
                         .build();
 
+                if (rpcReference.exposeName() != null && !rpcReference.exposeName().isEmpty()) {
+                    // @RpcReference指定了zk注册名称
+                    rpcServiceConfig.setFullyExposeName(rpcReference.exposeName());
+                } else {
+                    // 没指定就用待调用服务的类名
+                    rpcServiceConfig.setFullyExposeName(field.getName());
+                }
+
+                // 接口的代理用jdk，类的代理用cglib
+                String proxyType = field.getType().isInterface() ? "jdk" : "cglib";
                 RpcClientProxy rpcClientProxy = Objects.requireNonNull(
                         ExtensionLoader.getExtensionLoader(RpcClientProxy.class)).getExtension(proxyType);
 
@@ -87,7 +108,8 @@ public class SpringBeanPostProcess implements BeanPostProcessor {
                     // 用proxy类代替bean中字段的原始类
                     field.set(bean, proxy);
                 } catch (IllegalAccessException e) {
-                    log.error("init rpc proxy error: bean name = {}, error message = {}", beanName, e.getMessage());
+                    log.error("init rpc proxy error: bean name = {}, field = {}, error message = {}",
+                            beanName, field.getName(), e.getMessage());
                 }
             }
         }

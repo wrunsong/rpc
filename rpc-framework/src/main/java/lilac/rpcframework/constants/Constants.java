@@ -12,7 +12,6 @@ public class Constants {
     public static final int BUFFER_SIZE = 4096;
 
     public static final String REGISTRY_TYPE = "zk";
-    public static final String PROXY_TYPE = "jdk";
 
     public static final int SERVER_PORT = 8080;
 

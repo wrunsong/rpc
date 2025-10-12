@@ -1,1 +1,2 @@
-jdk=lilac.rpcframework.proxy.RpcClientJdkProxy
+jdk=lilac.rpcframework.proxy.impl.RpcClientJdkProxy
+cglib=lilac.rpcframework.proxy.impl.RpcClientCglibProxy

@@ -27,7 +27,7 @@ public class RpcRequestHandler {
      * @return
      */
     public Object handle(RpcRequest rpcRequest) {
-        Object service = serviceProvider.getService(rpcRequest.getRpcServiceName());
+        Object service = serviceProvider.getService(rpcRequest.getFullyExposeName());
         return invoke(rpcRequest, service);
     }
 

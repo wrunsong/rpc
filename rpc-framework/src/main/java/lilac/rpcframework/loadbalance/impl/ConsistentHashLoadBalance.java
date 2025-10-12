@@ -23,7 +23,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
     protected String doSelect(List<String> serviceAddresses, RpcRequest request) {
         int hashCode = System.identityHashCode(serviceAddresses);
 
-        String rpcServiceName = request.getRpcServiceName();
+        String rpcServiceName = request.getFullyExposeName();
         ConsistentSelector selector = selectors.get(rpcServiceName);
 
         if (selector == null || selector.identityHashCode != hashCode) {
