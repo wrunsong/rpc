@@ -18,8 +18,9 @@ TODO List:
 8. 集群
 9. 用netty的零拷贝，如transferTo等方法
 10. 用cglib做代理
-11. 用yaml配置，不用Constans配置
-12. protobuf序列化方式
+11. 用yaml配置，不用Constant配置
+12. 加载yaml配置的时候，用的静态方法，先于spring，slf4j好像没法用
+13. protobuf序列化方式
 
 技术点<br>
 1. 服务端注册了一个zk的钩子程序，在服务端结束时(@PreDestroy)会自动清除zk上自己的IP地址；
