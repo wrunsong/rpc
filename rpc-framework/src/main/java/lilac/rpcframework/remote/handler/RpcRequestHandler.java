@@ -1,6 +1,7 @@
 package lilac.rpcframework.remote.handler;
 
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.remote.dto.RpcRequest;
@@ -14,7 +15,8 @@ public class RpcRequestHandler {
 
     private final ServiceProvider serviceProvider;
 
-    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
 
     public RpcRequestHandler() {
         this.serviceProvider = Objects.requireNonNull(

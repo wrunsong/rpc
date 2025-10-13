@@ -6,7 +6,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.factory.SingletonFactory;
@@ -24,9 +25,10 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
     private final RpcRequestHandler requestHandler;
     private int idleCounter = 0;
 
-    private static final int MAX_IDLE_TIMES = Constants.MAX_IDLE_TIMES;
-    private static final String codecType = Constants.CODEC_TYPE;
-    private static final String compressType = Constants.COMPRESS_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final int MAX_IDLE_TIMES = yamlConfig.getLilacRpc().getMaxIdleTime();
+    private static final String codecType = yamlConfig.getLilacRpc().getCodec().getType();
+    private static final String compressType = yamlConfig.getLilacRpc().getCompress().getType();
 
     public NettyRpcServerHandler() {
         this.requestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);

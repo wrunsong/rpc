@@ -13,37 +13,35 @@ public class LoadRpcFrameworkYamlConfig {
 
     private static final Logger log = LoggerFactory.getLogger(LoadRpcFrameworkYamlConfig.class);
     private static volatile TopYamlConfig lilac = null;
+    private static final String filePath = "rpc-framework/src/main/resources/lilac-rpc.yaml";
 
     private LoadRpcFrameworkYamlConfig() {}
-
-    public static TopYamlConfig getYamlConfig() {
-        return lilac;
-    }
 
     // 加载 YAML 配置文件
     public static TopYamlConfig loadFromYaml() {
 
-        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        if (lilac == null) {
+            synchronized (LoadRpcFrameworkYamlConfig.class) {
+                if (lilac == null) {
+                    ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+                    objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
-        String filePath = "rpc-framework/src/main/resources/lilac-rpc.yaml";
-        try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
-
-            if (lilac == null) {
-                synchronized (LoadRpcFrameworkYamlConfig.class) {
-                    if (lilac == null) {
+                    try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
                         lilac = objectMapper.readValue(fileInputStream, TopYamlConfig.class);
                         lilac.initialize();
                         return lilac;
+                    } catch (Exception e) {
+                        // spring还没起来，log不起作用
+                        System.err.println("loadFromYaml error: " + e.getMessage());
+                        // 抛异常就返回默认初始化配置
+                        lilac.initialize();
+                        return lilac;
                     }
+
                 }
             }
-            return lilac;
-        } catch (Exception e) {
-            // spring还没起来，log不起作用
-            System.err.println("loadFromYaml error: " + e.getMessage());
-            return null;
         }
+        return lilac;
     }
 
 

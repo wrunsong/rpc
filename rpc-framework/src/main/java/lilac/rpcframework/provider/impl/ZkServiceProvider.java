@@ -1,13 +1,13 @@
 package lilac.rpcframework.provider.impl;
 
 import lilac.rpcframework.config.RpcServiceConfig;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.registry.ServiceRegistry;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.Objects;
@@ -20,8 +20,10 @@ public class ZkServiceProvider implements ServiceProvider {
     private final ServiceRegistry serviceRegistry;
 
 
-    private static final int port = Constants.SERVER_PORT;
-    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String RPC_SERVER_ADDRESS = yamlConfig.getLilacRpc().getServerAddress();
+    private static final int RPC_SERVER_PORT = yamlConfig.getLilacRpc().getServerPort();
+    private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
 
     public ZkServiceProvider() {
         this.SERVICE_MAP = new ConcurrentHashMap<>();
@@ -66,9 +68,8 @@ public class ZkServiceProvider implements ServiceProvider {
     @Override
     public void publishService(RpcServiceConfig config) {
         try {
-            String host = InetAddress.getLocalHost().getHostAddress();
             this.addService(config);
-            serviceRegistry.register(config.getFullyExposeName(), new InetSocketAddress(host, port));
+            serviceRegistry.register(config.getFullyExposeName(), new InetSocketAddress(RPC_SERVER_ADDRESS, RPC_SERVER_PORT));
         } catch (Exception e) {
             log.error("publish service error: {}", e.getMessage());
         }

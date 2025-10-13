@@ -3,7 +3,8 @@ package lilac.rpcframework.spring;
 import lilac.rpcframework.annotations.RpcReference;
 import lilac.rpcframework.annotations.RpcService;
 import lilac.rpcframework.config.RpcServiceConfig;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.factory.SingletonFactory;
 import lilac.rpcframework.provider.ServiceProvider;
@@ -24,7 +25,8 @@ public class SpringBeanPostProcess implements BeanPostProcessor {
     private final ServiceProvider serviceProvider;
     private final NettyRpcClient nettyRpcClient;
 
-    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
 
     public SpringBeanPostProcess() {
         this.serviceProvider = Objects.requireNonNull(

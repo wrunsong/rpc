@@ -1,7 +1,8 @@
 package lilac.rpcframework.registry.zk.util;
 
 
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -25,10 +26,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class CuratorUtil {
 
-    private static final int BASE_SLEEP_TIME = Constants.BASE_SLEEP_TIME;
-    private static final int MAX_RETRIES = Constants.MAX_RETRIES;
-    private static final String ZK_REGISTER_ROOT_PATH = Constants.ZOOKEEPER_ROOT_PATH;
-    private static final String ZOOKEEPER_ADDRESS = Constants.ZOOKEEPER_ADDRESS;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final int BASE_SLEEP_TIME = yamlConfig.getLilacRpc().getRegistry().getBaseSleepTime();
+    private static final int MAX_RETRIES = yamlConfig.getLilacRpc().getRegistry().getMaxRetries();
+    private static final String ZK_REGISTER_ROOT_PATH = yamlConfig.getLilacRpc().getRegistry().getZk().getPath();
+    private static final String ZOOKEEPER_ADDRESS = yamlConfig.getLilacRpc().getRegistry().getAddress();
     // serviceName -> addresses
     private static final Map<String, List<String>> SERVICE_ADDRESS_MAP = new ConcurrentHashMap<>();
     // full zk path

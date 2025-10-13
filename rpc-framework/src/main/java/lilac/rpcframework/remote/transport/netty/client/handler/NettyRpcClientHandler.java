@@ -7,7 +7,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.remote.dto.RpcMessage;
@@ -23,8 +24,9 @@ import static lilac.rpcframework.remote.constant.RpcConstant.*;
 @Slf4j
 public class NettyRpcClientHandler extends ChannelInboundHandlerAdapter {
 
-    private static final String compressType = Constants.COMPRESS_TYPE;
-    private static final String codecType = Constants.CODEC_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String compressType = yamlConfig.getLilacRpc().getCompress().getType();
+    private static final String codecType = yamlConfig.getLilacRpc().getCodec().getType();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

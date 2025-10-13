@@ -10,7 +10,8 @@ public class RegistryYamlConfig {
     private ZkYamlConfig zk;
 
     void initialize() {
-        this.zk = SingletonFactory.getInstance(ZkYamlConfig.class);
+
+
 
         if (type == null || type.isEmpty()) {
             type = "zk";  // 默认注册类型
@@ -31,6 +32,13 @@ public class RegistryYamlConfig {
 
         if (zk != null) {
             zk.initialize();
+        } else {
+            zk = SingletonFactory.getInstance(ZkYamlConfig.class);
+            if (zk != null) {
+                zk.initialize();
+            } else {
+                System.err.println("zk is null");
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package lilac.rpcframework.config;
 
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.registry.ServiceRegistry;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,8 @@ public class ShutdownHook {
     private static volatile ShutdownHook shutdownHook = null;
     private final ServiceRegistry serviceRegistry;
 
-    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
 
     private ShutdownHook() {
         this.serviceRegistry = Objects.requireNonNull(ExtensionLoader.getExtensionLoader(ServiceRegistry.class))

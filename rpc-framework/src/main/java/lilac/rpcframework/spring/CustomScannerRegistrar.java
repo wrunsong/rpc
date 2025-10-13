@@ -1,7 +1,8 @@
 package lilac.rpcframework.spring;
 
 import lilac.rpcframework.annotations.RpcScan;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
@@ -18,7 +19,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
-    private static final String SPRING_BEAN_BASE_PACKAGE = Constants.SPRING_BEAN_BASE_PACKAGE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+
+
+    private static final String SPRING_BEAN_BASE_PACKAGE = yamlConfig.getLilacRpc().getSpringBeanBasePackage();
 
     private static ResourceLoader resourceLoader;
 

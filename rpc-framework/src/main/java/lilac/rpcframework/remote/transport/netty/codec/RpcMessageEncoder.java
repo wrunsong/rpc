@@ -5,7 +5,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lilac.rpcframework.compress.Compress;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.extension.ExtensionLoader;
@@ -34,7 +35,8 @@ import static lilac.rpcframework.remote.constant.RpcConstant.*;
 public class RpcMessageEncoder extends MessageToByteEncoder<RpcMessage> {
     private static final AtomicInteger MESSAGE_COUNTER = new AtomicInteger(0);
 
-    private static final String compressType = Constants.COMPRESS_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String compressType = yamlConfig.getLilacRpc().getCompress().getType();
 
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, RpcMessage rpcMessage, ByteBuf byteBuf) throws Exception {

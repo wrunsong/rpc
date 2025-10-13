@@ -10,11 +10,16 @@ public class TopYamlConfig {
     private TopYamlConfig() {}
 
     public void initialize() {
-        this.lilacRpc = SingletonFactory.getInstance(RpcYamlConfig.class);
+
         if (lilacRpc != null) {
             lilacRpc.initialize();
         } else {
-            log.error("rpc config is null");
+            lilacRpc = SingletonFactory.getInstance(RpcYamlConfig.class);
+            if (lilacRpc != null) {
+                lilacRpc.initialize();
+            } else {
+                System.err.println("lilacRpc is null");
+            }
         }
     }
 

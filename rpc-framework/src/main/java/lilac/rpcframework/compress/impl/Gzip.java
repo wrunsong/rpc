@@ -1,7 +1,8 @@
 package lilac.rpcframework.compress.impl;
 
 import lilac.rpcframework.compress.Compress;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +14,8 @@ import java.util.zip.GZIPOutputStream;
 @Slf4j
 public class Gzip implements Compress {
 
-    private static final int BUFFER_SIZE = Constants.BUFFER_SIZE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final int BUFFER_SIZE = yamlConfig.getLilacRpc().getCompress().getBufferSize();
 
     @Override
     public byte[] compress(byte[] bytes) {

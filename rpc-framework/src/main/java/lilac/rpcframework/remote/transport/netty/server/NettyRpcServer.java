@@ -9,7 +9,8 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lilac.rpcframework.config.ShutdownHook;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.extension.ExtensionLoader;
 import lilac.rpcframework.provider.ServiceProvider;
 import lilac.rpcframework.remote.transport.netty.codec.RpcMessageDecoder;
@@ -19,7 +20,6 @@ import lilac.rpcframework.utils.threadpool.ThreadPoolFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.net.InetAddress;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -27,8 +27,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyRpcServer {
 
-    private static final int PORT = Constants.SERVER_PORT;
-    private static final String registryType = Constants.REGISTRY_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String RPC_SERVER_ADDRESS = yamlConfig.getLilacRpc().getServerAddress();
+    private static final int RPC_SERVER_PORT = yamlConfig.getLilacRpc().getServerPort();
+    private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
 
     private final ServiceProvider serviceProvider = Objects.requireNonNull(
             ExtensionLoader.getExtensionLoader(ServiceProvider.class)).getExtension(registryType);
@@ -47,7 +49,6 @@ public class NettyRpcServer {
         );
 
         try {
-            String host = InetAddress.getLocalHost().getHostAddress();
 
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
@@ -68,7 +69,7 @@ public class NettyRpcServer {
                         }
                     });
 
-            ChannelFuture future = serverBootstrap.bind(host, PORT).sync();
+            ChannelFuture future = serverBootstrap.bind(RPC_SERVER_ADDRESS, RPC_SERVER_PORT).sync();
 
             future.channel().closeFuture().sync();
         } catch (Exception e) {

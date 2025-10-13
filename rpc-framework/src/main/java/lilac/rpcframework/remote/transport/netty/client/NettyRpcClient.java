@@ -8,7 +8,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import lilac.rpcframework.constants.Constants;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.enums.CompressType;
 import lilac.rpcframework.enums.SerializationType;
 import lilac.rpcframework.extension.ExtensionLoader;
@@ -37,10 +38,10 @@ public class NettyRpcClient {
     private final Bootstrap bootstrap;
     private final EventLoopGroup eventLoopGroup;
 
-
-    private static final String registryType = Constants.REGISTRY_TYPE;
-    private static final String codecType = Constants.CODEC_TYPE;
-    private static final String compressType = Constants.COMPRESS_TYPE;
+    private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
+    private static final String codecType = yamlConfig.getLilacRpc().getCodec().getType();
+    private static final String compressType = yamlConfig.getLilacRpc().getCompress().getType();
 
     public NettyRpcClient() {
 
