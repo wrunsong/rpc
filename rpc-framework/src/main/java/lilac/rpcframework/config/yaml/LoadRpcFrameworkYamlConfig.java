@@ -16,6 +16,10 @@ public class LoadRpcFrameworkYamlConfig {
 
     private LoadRpcFrameworkYamlConfig() {}
 
+    public static TopYamlConfig getYamlConfig() {
+        return lilac;
+    }
+
     // 加载 YAML 配置文件
     public static TopYamlConfig loadFromYaml() {
 
@@ -36,8 +40,8 @@ public class LoadRpcFrameworkYamlConfig {
             }
             return lilac;
         } catch (Exception e) {
-            // TODO spring还没起来，log不起作用
-            log.error("loadFromYaml error: {}", e.getMessage());
+            // spring还没起来，log不起作用
+            System.err.println("loadFromYaml error: " + e.getMessage());
             return null;
         }
     }

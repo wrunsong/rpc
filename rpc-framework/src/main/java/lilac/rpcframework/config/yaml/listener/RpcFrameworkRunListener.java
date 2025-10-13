@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplicationRunListener;
 public class RpcFrameworkRunListener implements SpringApplicationRunListener {
     @Override
     public void starting(ConfigurableBootstrapContext bootstrapContext) {
+        // 将自定义的yaml文件导入
         TopYamlConfig topYamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
         SpringApplicationRunListener.super.starting(bootstrapContext);
     }

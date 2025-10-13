@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TopYamlConfig {
     private RpcYamlConfig lilacRpc;
 
+    private TopYamlConfig() {}
+
     public void initialize() {
         this.lilacRpc = SingletonFactory.getInstance(RpcYamlConfig.class);
         if (lilacRpc != null) {
