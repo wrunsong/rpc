@@ -1,5 +1,6 @@
 package lilac.rpcframework.constants;
 
+@Deprecated
 public class Constants {
 
     public static final String ZOOKEEPER_ADDRESS = "127.0.0.1:2181";
