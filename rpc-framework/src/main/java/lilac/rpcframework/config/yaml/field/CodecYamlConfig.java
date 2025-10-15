@@ -5,7 +5,7 @@ public class CodecYamlConfig {
 
     void initialize() {
         if (type == null || type.isEmpty()) {
-            type = "consistentHash";  // 默认负载均衡算法
+            type = "hessian";  // 默认负载均衡算法
         }
     }
 

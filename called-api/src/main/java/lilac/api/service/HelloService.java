@@ -1,6 +1,7 @@
 package lilac.api.service;
 
-import lilac.api.dto.HelloDto;
+
+import lilac.rpcframework.api.dto.HelloDto;
 
 public interface HelloService {
 

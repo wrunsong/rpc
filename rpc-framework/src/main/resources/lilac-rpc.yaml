@@ -10,7 +10,7 @@ lilac-rpc:
     type: gzip
     buffer-size: 4096
   codec:
-    type: hessian
+    type: protobuf
   loadbalance:
     type: consistentHash
   server-port: 10180

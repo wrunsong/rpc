@@ -18,7 +18,8 @@ public class RpcRequest implements Serializable {
     private String serviceName;
     private String methodName;
     private Object[] parameters;
-    private Class<?>[] paramTypes;
+    private String[] paramTypes;
+    private String returnType;
     // version 字段（服务版本）主要是为后续不兼容升级提供可能。
     private String version;
     // group 字段主要用于处理一个接口有多个类实现的情况。

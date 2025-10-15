@@ -30,12 +30,15 @@ public class RpcResponse<T> implements Serializable {
      */
     private T data;
 
+    private String returnType;
+
     public static <T> RpcResponse<T> success(T data, String requestId) {
         RpcResponse<T> rpcResponse = new RpcResponse<>();
         rpcResponse.setCode(RpcResponseCode.SUCCESS.getCode());
         rpcResponse.setMessage(RpcResponseCode.SUCCESS.getMessage());
         rpcResponse.setRequestId(requestId);
         if (data != null) {
+            rpcResponse.setReturnType(data.getClass().getName());
             rpcResponse.setData(data);
         }
         return rpcResponse;

@@ -13,10 +13,6 @@ public class RpcYamlConfig {
     private LoadBalanceYamlConfig loadbalance;
 
     void initialize() {
-        this.registry = SingletonFactory.getInstance(RegistryYamlConfig.class);
-        this.compress = SingletonFactory.getInstance(CompressYamlConfig.class);
-        this.codec = SingletonFactory.getInstance(CodecYamlConfig.class);
-        this.loadbalance = SingletonFactory.getInstance(LoadBalanceYamlConfig.class);
 
         if (serverAddress == null || serverAddress.isEmpty()) {
             serverAddress = "127.0.0.1";  // 默认地址
@@ -34,15 +30,44 @@ public class RpcYamlConfig {
 
         if (registry != null) {
             registry.initialize();
+        } else {
+            registry = SingletonFactory.getInstance(RegistryYamlConfig.class);
+            if (registry != null) {
+                registry.initialize();
+            }
         }
+
         if (compress != null) {
             compress.initialize();
+        } else {
+            compress = SingletonFactory.getInstance(CompressYamlConfig.class);
+            if (compress != null) {
+                compress.initialize();
+            }
         }
+
         if (codec != null) {
             codec.initialize();
+        } else {
+            codec = SingletonFactory.getInstance(CodecYamlConfig.class);
+            if (codec != null) {
+                codec.initialize();
+            }
         }
+
+
         if (loadbalance != null) {
             loadbalance.initialize();
+        } else {
+            loadbalance = SingletonFactory.getInstance(LoadBalanceYamlConfig.class);
+            if (loadbalance != null) {
+                loadbalance.initialize();
+            }
+        }
+
+        if (registry == null || compress == null || codec == null || loadbalance == null) {
+            System.err.println("registry or compress or codec or loadbalance is null");
+            return;
         }
     }
 

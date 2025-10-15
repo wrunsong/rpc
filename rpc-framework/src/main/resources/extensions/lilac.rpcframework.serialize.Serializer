@@ -1,1 +1,2 @@
 hessian=lilac.rpcframework.serialize.impl.Hessian
+protobuf=lilac.rpcframework.serialize.impl.Protobuf

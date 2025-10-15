@@ -1,7 +1,7 @@
 package lilac.rpcclient.controller;
 
 import lilac.api.service.HelloService;
-import lilac.api.dto.HelloDto;
+import lilac.rpcframework.api.dto.HelloDto;
 import lilac.rpcframework.annotations.RpcReference;
 import lilac.api.utils.RpcTestUtil;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ public class HelloController {
         String hello = helloService.hello(new HelloDto("message", "description"));
         System.out.println(hello + "\n");
 
-        rpcTestUtil.test();
+//        rpcTestUtil.test();
 
         return hello;
 

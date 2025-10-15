@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package lilac.rpcframework.remote.proto;
+
+option java_package = "lilac.rpcframework.remote.proto";
+
+option java_outer_classname = "RpcRequestProto";
+
+import "google/protobuf/any.proto";
+
+message RpcRequest {
+  string request_id = 1;
+
+  string service_name = 2;
+
+  string method_name = 3;
+
+  repeated google.protobuf.Any parameters = 4;
+
+  repeated string param_types = 5;
+
+  string version = 6;
+
+  string group = 7;
+
+  string fully_expose_name = 8;
+
+  string return_type = 9;
+
+
+
+}

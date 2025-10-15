@@ -5,7 +5,7 @@ public class LoadBalanceYamlConfig {
 
     void initialize() {
         if (type == null || type.isEmpty()) {
-            type = "consistentHash";  // 默认负载均衡算法
+            type = "consistentHash";  // 默认序列化方式
         }
     }
 

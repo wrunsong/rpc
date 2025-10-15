@@ -28,10 +28,19 @@ public interface RpcClientProxy {
                 .serviceName(method.getDeclaringClass().getSimpleName())
                 .methodName(method.getName())
                 .parameters(args)
-                .paramTypes(method.getParameterTypes())
+                .paramTypes(castClassToString(method.getParameterTypes()))
+                .returnType(method.getReturnType().getName())
                 .group(rpcServiceConfig.getGroup())
                 .version(rpcServiceConfig.getVersion())
                 .build();
+    }
+
+    private String[] castClassToString(Class<?>[] paramTypes) {
+        String[] paramTypesStr = new String[paramTypes.length];
+        for (int i = 0; i < paramTypes.length; i++) {
+            paramTypesStr[i] = paramTypes[i].getName();
+        }
+        return paramTypesStr;
     }
 
 

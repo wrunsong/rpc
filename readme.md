@@ -1,13 +1,13 @@
-**简单的RPC框架，用于学习和面试**
+# **简单的RPC框架，用于学习和面试**
 <br><br>
-使用方式: <br>
-1. 环境要求：本地或者线上环境有zookeeper，在Constants类对zk配置；<br>
+## 使用方式: <br>
+1. 环境要求：本地或者线上环境有zookeeper，在lilac-rpc.yaml对rpc-framework进行配置；<br>
 2. 先启动RpcServerApplication以启动服务端；<br>
 3. 再启动RpcClientApplication启动客户端；<br>
 4. 控制台会打印调用的rpc方法
 <br>
 
-TODO List:
+## TODO List:
 1. 钩子没发挥作用  ✅
 2. client和server 与spring集成 ✅
 3. 熔断
@@ -21,6 +21,7 @@ TODO List:
 11. 用yaml配置，不用Constants配置 ✅
 12. 加载yaml配置的时候，用的静态方法，先于spring，slf4j好像没法用 ✅
 13. protobuf序列化方式
+14. SPI机制是否真的可以在client/server模块下进行扩展？
 
 ## 技术点<br>
 1. 服务端注册了一个zk的钩子程序，在服务端结束时(@PreDestroy)会自动清除zk上自己的IP地址；

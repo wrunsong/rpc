@@ -1,4 +1,4 @@
-package lilac.api.dto;
+package lilac.rpcframework.api.dto;
 
 import lombok.*;
 

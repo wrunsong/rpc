@@ -1,7 +1,7 @@
 package lilac.server.impl;
 
 import lilac.api.service.HelloService;
-import lilac.api.dto.HelloDto;
+import lilac.rpcframework.api.dto.HelloDto;
 import lilac.rpcframework.annotations.RpcService;
 import org.springframework.stereotype.Service;
 
