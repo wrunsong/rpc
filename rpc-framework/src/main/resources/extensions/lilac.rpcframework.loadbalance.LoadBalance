@@ -1,1 +1,6 @@
 consistentHash=lilac.rpcframework.loadbalance.impl.ConsistentHashLoadBalance
+ipHash=lilac.rpcframework.loadbalance.impl.IPHashLoadBalance
+random=lilac.rpcframework.loadbalance.impl.RandomLoadBalance
+round=lilac.rpcframework.loadbalance.impl.RoundRobinLoadBalance
+lc=lilac.rpcframework.loadbalance.impl.LeastConnectionsLoadBalance
+lt=lilac.rpcframework.loadbalance.impl.LeastTimeLoadBalance

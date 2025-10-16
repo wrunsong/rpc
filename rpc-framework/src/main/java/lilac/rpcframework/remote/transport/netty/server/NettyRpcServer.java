@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import lilac.rpcframework.config.ShutdownHook;
+import lilac.rpcframework.config.hook.ShutdownRegistryHook;
 import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
 import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.extension.ExtensionLoader;
@@ -40,7 +40,7 @@ public class NettyRpcServer {
      */
     public void start() {
         // clear registry
-        ShutdownHook.getInstance().clearAll();
+        ShutdownRegistryHook.getInstance().clearAll();
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() / 2);
         DefaultEventLoopGroup handlerGroup = new DefaultEventLoopGroup(

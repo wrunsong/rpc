@@ -13,6 +13,7 @@ public class LoadRpcFrameworkYamlConfig {
 
     private static final Logger log = LoggerFactory.getLogger(LoadRpcFrameworkYamlConfig.class);
     private static volatile TopYamlConfig lilac = null;
+    // TODO 换成classLoader
     private static final String filePath = "rpc-framework/src/main/resources/lilac-rpc.yaml";
 
     private LoadRpcFrameworkYamlConfig() {}

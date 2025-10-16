@@ -8,7 +8,7 @@ import java.util.List;
 @Slf4j
 public abstract class AbstractLoadBalance implements LoadBalance {
     @Override
-    public String selectServiceAddress(List<String> serviceAddresses, RpcRequest request) {
+    public String selectServiceAddress(List<String> serviceAddresses, RpcRequest request, String clientAddress) {
         if (serviceAddresses == null || serviceAddresses.isEmpty()) {
             log.error("service address is empty");
             return null;
@@ -17,13 +17,13 @@ public abstract class AbstractLoadBalance implements LoadBalance {
             log.error("request is null");
             return null;
         }
-        if (serviceAddresses.size() == 1) {
-            return serviceAddresses.get(0);
-        }
+//        if (serviceAddresses.size() == 1) {
+//            return serviceAddresses.getFirst();
+//        }
 
-        return doSelect(serviceAddresses, request);
+        return doSelect(serviceAddresses, request, clientAddress);
     }
 
 
-    protected abstract String doSelect(List<String> serviceAddresses, RpcRequest request);
+    protected abstract String doSelect(List<String> serviceAddresses, RpcRequest request, String clientAddress);
 }

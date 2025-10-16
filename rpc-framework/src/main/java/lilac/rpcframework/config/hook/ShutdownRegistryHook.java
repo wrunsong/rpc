@@ -1,4 +1,4 @@
-package lilac.rpcframework.config;
+package lilac.rpcframework.config.hook;
 
 import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
 import lilac.rpcframework.config.yaml.field.TopYamlConfig;
@@ -9,29 +9,29 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 @Slf4j
-public class ShutdownHook {
+public class ShutdownRegistryHook {
     // lazy mode singleton
-    private static volatile ShutdownHook shutdownHook = null;
+    private static volatile ShutdownRegistryHook shutdownRegistryHook = null;
     private final ServiceRegistry serviceRegistry;
 
     private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
     private static final String registryType = yamlConfig.getLilacRpc().getRegistry().getType();
 
-    private ShutdownHook() {
+    private ShutdownRegistryHook() {
         this.serviceRegistry = Objects.requireNonNull(ExtensionLoader.getExtensionLoader(ServiceRegistry.class))
                 .getExtension(registryType);
     }
 
 
-    public static ShutdownHook getInstance() {
-        if (shutdownHook == null) {
-            synchronized (ShutdownHook.class) {
-                if (shutdownHook == null) {
-                    shutdownHook = new ShutdownHook();
+    public static ShutdownRegistryHook getInstance() {
+        if (shutdownRegistryHook == null) {
+            synchronized (ShutdownRegistryHook.class) {
+                if (shutdownRegistryHook == null) {
+                    shutdownRegistryHook = new ShutdownRegistryHook();
                 }
             }
         }
-        return shutdownHook;
+        return shutdownRegistryHook;
     }
 
     public void clearAll() {

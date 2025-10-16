@@ -20,4 +20,6 @@ message RpcResponse {
 
   string return_type = 5;
 
+  string service_address = 6;
+
 }

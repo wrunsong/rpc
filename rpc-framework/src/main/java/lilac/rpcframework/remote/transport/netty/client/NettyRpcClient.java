@@ -24,6 +24,7 @@ import lilac.rpcframework.remote.transport.netty.codec.RpcMessageDecoder;
 import lilac.rpcframework.remote.transport.netty.codec.RpcMessageEncoder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -113,7 +114,9 @@ public class NettyRpcClient {
         CompletableFuture<RpcResponse<Object>> responseFuture = new CompletableFuture<>();
 
         try {
-            InetSocketAddress address = registry.lookupService(request);
+            // TODO 确认一下这是不是客户端IP
+            String clientAddress = InetAddress.getLocalHost().getHostAddress();
+            InetSocketAddress address = registry.lookupService(request, clientAddress);
             Channel channel = getChannel(address);
 
             if (channel != null && channel.isActive()) {

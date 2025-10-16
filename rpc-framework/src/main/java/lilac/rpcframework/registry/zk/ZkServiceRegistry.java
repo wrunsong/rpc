@@ -47,7 +47,7 @@ public class ZkServiceRegistry implements ServiceRegistry {
      * @return
      */
     @Override
-    public InetSocketAddress lookupService(RpcRequest request) {
+    public InetSocketAddress lookupService(RpcRequest request, String clientAddress) {
         String rpcServiceName = request.getFullyExposeName();
 
         CuratorFramework zkClient = CuratorUtil.getZkClient();
@@ -55,7 +55,7 @@ public class ZkServiceRegistry implements ServiceRegistry {
         if (addresses == null || addresses.isEmpty()) {
             log.error("no server can provide service: {}",  rpcServiceName);
         }
-        String targetAddress = loadBalance.selectServiceAddress(addresses, request);
+        String targetAddress = loadBalance.selectServiceAddress(addresses, request, clientAddress);
         String[] strings = targetAddress.split(":");
         String ipAddress = strings[0];
         int port = Integer.parseInt(strings[1]);

@@ -85,6 +85,18 @@ public final class RpcResponseProto {
      */
     com.google.protobuf.ByteString
         getReturnTypeBytes();
+
+    /**
+     * <code>string service_address = 6;</code>
+     * @return The serviceAddress.
+     */
+    java.lang.String getServiceAddress();
+    /**
+     * <code>string service_address = 6;</code>
+     * @return The bytes for serviceAddress.
+     */
+    com.google.protobuf.ByteString
+        getServiceAddressBytes();
   }
   /**
    * Protobuf type {@code lilac.rpcframework.remote.proto.RpcResponse}
@@ -111,6 +123,7 @@ public final class RpcResponseProto {
       requestId_ = "";
       message_ = "";
       returnType_ = "";
+      serviceAddress_ = "";
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -281,6 +294,45 @@ public final class RpcResponseProto {
       }
     }
 
+    public static final int SERVICE_ADDRESS_FIELD_NUMBER = 6;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object serviceAddress_ = "";
+    /**
+     * <code>string service_address = 6;</code>
+     * @return The serviceAddress.
+     */
+    @java.lang.Override
+    public java.lang.String getServiceAddress() {
+      java.lang.Object ref = serviceAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        serviceAddress_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string service_address = 6;</code>
+     * @return The bytes for serviceAddress.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getServiceAddressBytes() {
+      java.lang.Object ref = serviceAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        serviceAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -310,6 +362,9 @@ public final class RpcResponseProto {
       if (!com.google.protobuf.GeneratedMessage.isStringEmpty(returnType_)) {
         com.google.protobuf.GeneratedMessage.writeString(output, 5, returnType_);
       }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(serviceAddress_)) {
+        com.google.protobuf.GeneratedMessage.writeString(output, 6, serviceAddress_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -335,6 +390,9 @@ public final class RpcResponseProto {
       }
       if (!com.google.protobuf.GeneratedMessage.isStringEmpty(returnType_)) {
         size += com.google.protobuf.GeneratedMessage.computeStringSize(5, returnType_);
+      }
+      if (!com.google.protobuf.GeneratedMessage.isStringEmpty(serviceAddress_)) {
+        size += com.google.protobuf.GeneratedMessage.computeStringSize(6, serviceAddress_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -364,6 +422,8 @@ public final class RpcResponseProto {
       }
       if (!getReturnType()
           .equals(other.getReturnType())) return false;
+      if (!getServiceAddress()
+          .equals(other.getServiceAddress())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -387,6 +447,8 @@ public final class RpcResponseProto {
       }
       hash = (37 * hash) + RETURN_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + getReturnType().hashCode();
+      hash = (37 * hash) + SERVICE_ADDRESS_FIELD_NUMBER;
+      hash = (53 * hash) + getServiceAddress().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -533,6 +595,7 @@ public final class RpcResponseProto {
           dataBuilder_ = null;
         }
         returnType_ = "";
+        serviceAddress_ = "";
         return this;
       }
 
@@ -585,6 +648,9 @@ public final class RpcResponseProto {
         if (((from_bitField0_ & 0x00000010) != 0)) {
           result.returnType_ = returnType_;
         }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.serviceAddress_ = serviceAddress_;
+        }
         result.bitField0_ |= to_bitField0_;
       }
 
@@ -619,6 +685,11 @@ public final class RpcResponseProto {
         if (!other.getReturnType().isEmpty()) {
           returnType_ = other.returnType_;
           bitField0_ |= 0x00000010;
+          onChanged();
+        }
+        if (!other.getServiceAddress().isEmpty()) {
+          serviceAddress_ = other.serviceAddress_;
+          bitField0_ |= 0x00000020;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -674,6 +745,11 @@ public final class RpcResponseProto {
                 bitField0_ |= 0x00000010;
                 break;
               } // case 42
+              case 50: {
+                serviceAddress_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 50
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1060,6 +1136,78 @@ public final class RpcResponseProto {
         return this;
       }
 
+      private java.lang.Object serviceAddress_ = "";
+      /**
+       * <code>string service_address = 6;</code>
+       * @return The serviceAddress.
+       */
+      public java.lang.String getServiceAddress() {
+        java.lang.Object ref = serviceAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          serviceAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string service_address = 6;</code>
+       * @return The bytes for serviceAddress.
+       */
+      public com.google.protobuf.ByteString
+          getServiceAddressBytes() {
+        java.lang.Object ref = serviceAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          serviceAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string service_address = 6;</code>
+       * @param value The serviceAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServiceAddress(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        serviceAddress_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string service_address = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServiceAddress() {
+        serviceAddress_ = getDefaultInstance().getServiceAddress();
+        bitField0_ = (bitField0_ & ~0x00000020);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string service_address = 6;</code>
+       * @param value The bytes for serviceAddress to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServiceAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        serviceAddress_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:lilac.rpcframework.remote.proto.RpcResponse)
     }
 
@@ -1127,11 +1275,12 @@ public final class RpcResponseProto {
     java.lang.String[] descriptorData = {
       "\n\021RpcResponse.proto\022\037lilac.rpcframework." +
       "remote.proto\032\031google/protobuf/any.proto\"" +
-      "y\n\013RpcResponse\022\022\n\nrequest_id\030\001 \001(\t\022\014\n\004co" +
-      "de\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\022\"\n\004data\030\004 \001(\0132" +
-      "\024.google.protobuf.Any\022\023\n\013return_type\030\005 \001" +
-      "(\tB3\n\037lilac.rpcframework.remote.protoB\020R" +
-      "pcResponseProtob\006proto3"
+      "\222\001\n\013RpcResponse\022\022\n\nrequest_id\030\001 \001(\t\022\014\n\004c" +
+      "ode\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\022\"\n\004data\030\004 \001(\013" +
+      "2\024.google.protobuf.Any\022\023\n\013return_type\030\005 " +
+      "\001(\t\022\027\n\017service_address\030\006 \001(\tB3\n\037lilac.rp" +
+      "cframework.remote.protoB\020RpcResponseProt" +
+      "ob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1143,7 +1292,7 @@ public final class RpcResponseProto {
     internal_static_lilac_rpcframework_remote_proto_RpcResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_lilac_rpcframework_remote_proto_RpcResponse_descriptor,
-        new java.lang.String[] { "RequestId", "Code", "Message", "Data", "ReturnType", });
+        new java.lang.String[] { "RequestId", "Code", "Message", "Data", "ReturnType", "ServiceAddress", });
     descriptor.resolveAllFeaturesImmutable();
     com.google.protobuf.AnyProto.getDescriptor();
   }

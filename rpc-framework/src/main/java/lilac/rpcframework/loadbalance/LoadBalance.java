@@ -14,5 +14,5 @@ public interface LoadBalance {
      * @param request 请求
      * @return 选中的IP
      */
-    String selectServiceAddress(List<String> serviceAddresses, RpcRequest request);
+    String selectServiceAddress(List<String> serviceAddresses, RpcRequest request, String clientAddress);
 }

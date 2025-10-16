@@ -21,7 +21,7 @@ public interface ServiceRegistry {
      * @param request 客户端发起的请求
      * @return 能够提供服务的IP
      */
-    InetSocketAddress lookupService(RpcRequest request);
+    InetSocketAddress lookupService(RpcRequest request, String clientAddress);
 
     /**
      * 在关闭服务的时候，同时清理注册中心注册的服务

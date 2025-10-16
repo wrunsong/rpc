@@ -12,7 +12,7 @@ lilac-rpc:
   codec:
     type: protobuf
   loadbalance:
-    type: consistentHash
+    type: lc
   server-port: 10180
   max-idle-time: 1
   server-address: 127.0.0.1

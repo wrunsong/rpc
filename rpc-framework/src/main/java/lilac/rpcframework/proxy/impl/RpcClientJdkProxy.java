@@ -1,6 +1,8 @@
 package lilac.rpcframework.proxy.impl;
 
 import lilac.rpcframework.config.RpcServiceConfig;
+import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
+import lilac.rpcframework.config.yaml.field.TopYamlConfig;
 import lilac.rpcframework.proxy.RpcClientProxy;
 import lilac.rpcframework.remote.dto.RpcRequest;
 import lilac.rpcframework.remote.dto.RpcResponse;
@@ -17,6 +19,8 @@ public class RpcClientJdkProxy implements InvocationHandler, RpcClientProxy {
 
     private NettyRpcClient nettyRpcClient;
     private RpcServiceConfig rpcServiceConfig;
+    private final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
+    private final String loadBalanceType = yamlConfig.getLilacRpc().getLoadbalance().getType();
 
 
     @Override
@@ -39,17 +43,12 @@ public class RpcClientJdkProxy implements InvocationHandler, RpcClientProxy {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
+        long start = System.nanoTime();
         RpcRequest rpcRequest = getRpcRequest(method, args, rpcServiceConfig);
 
         CompletableFuture<RpcResponse<Object>> future = nettyRpcClient.sendRpcRequest(rpcRequest);
 
-        RpcResponse<Object> rpcResponse = future.join();
-
-        if (!check(rpcRequest, rpcResponse)) {
-            return null;
-        }
-
-        return rpcResponse.getData();
+        return processFutureResponse(future, start, rpcRequest, nettyRpcClient, loadBalanceType);
     }
 
 }

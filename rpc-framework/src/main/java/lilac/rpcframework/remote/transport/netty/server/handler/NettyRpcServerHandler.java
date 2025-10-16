@@ -29,6 +29,8 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
     private static final int MAX_IDLE_TIMES = yamlConfig.getLilacRpc().getMaxIdleTime();
     private static final String codecType = yamlConfig.getLilacRpc().getCodec().getType();
     private static final String compressType = yamlConfig.getLilacRpc().getCompress().getType();
+    private static final String serverAddress = yamlConfig.getLilacRpc().getServerAddress() +
+            ":" + yamlConfig.getLilacRpc().getServerPort();
 
     public NettyRpcServerHandler() {
         this.requestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);
@@ -55,10 +57,10 @@ public class NettyRpcServerHandler extends ChannelInboundHandlerAdapter {
                     rpcMessage.setMessageType(RESPONSE_TYPE);
 
                     if (ctx.channel().isActive() && ctx.channel().isWritable()) {
-                        RpcResponse<Object> success = RpcResponse.success(handledResult, rpcRequest.getRequestId());
+                        RpcResponse<Object> success = RpcResponse.success(handledResult, rpcRequest.getRequestId(), serverAddress);
                         rpcMessage.setData(success);
                     } else {
-                        RpcResponse<Object> fail = RpcResponse.fail();
+                        RpcResponse<Object> fail = RpcResponse.fail(serverAddress);
                         rpcMessage.setData(fail);
                         log.error("Process request [{}] error!", rpcRequest.getRequestId());
                     }

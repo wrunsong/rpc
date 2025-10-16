@@ -106,6 +106,7 @@ public class Protobuf implements Serializer {
                 .message(protoResp.getMessage())
                 .data(convertProtoToObject(protoResp.getData(), protoResp.getReturnType()))
                 .returnType(protoResp.getReturnType())
+                .serviceAddress(protoResp.getServiceAddress())
                 .build();
     }
 
@@ -159,6 +160,7 @@ public class Protobuf implements Serializer {
                 .setMessage(rpcResponse.getMessage())
                 .setData(convertObjectToProto(rpcResponse.getData()))
                 .setReturnType(rpcResponse.getReturnType())
+                .setServiceAddress(rpcResponse.getServiceAddress())
                 .build();
     }
 

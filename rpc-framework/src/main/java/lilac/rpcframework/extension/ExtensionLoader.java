@@ -138,6 +138,7 @@ public class ExtensionLoader<T> {
     private void loadDirectory(Map<String, Class<?>> classNameToClazzMap){
         String filePath = EXTENSION_DIRECTORY + File.separator + type.getName();
         try {
+            // 使用ClassLoader来加载资源，因为这样可以跨jar包，只要都在同一个resources路径下被同一个类加载器加载，就都能找到
             ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
             Enumeration<URL> urls = classLoader.getResources(filePath);
             if (urls != null) {

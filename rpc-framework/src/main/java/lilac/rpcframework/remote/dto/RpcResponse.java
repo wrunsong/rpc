@@ -32,11 +32,14 @@ public class RpcResponse<T> implements Serializable {
 
     private String returnType;
 
-    public static <T> RpcResponse<T> success(T data, String requestId) {
+    private String serviceAddress;
+
+    public static <T> RpcResponse<T> success(T data, String requestId, String serviceAddress) {
         RpcResponse<T> rpcResponse = new RpcResponse<>();
         rpcResponse.setCode(RpcResponseCode.SUCCESS.getCode());
         rpcResponse.setMessage(RpcResponseCode.SUCCESS.getMessage());
         rpcResponse.setRequestId(requestId);
+        rpcResponse.setServiceAddress(serviceAddress);
         if (data != null) {
             rpcResponse.setReturnType(data.getClass().getName());
             rpcResponse.setData(data);
@@ -44,10 +47,11 @@ public class RpcResponse<T> implements Serializable {
         return rpcResponse;
     }
 
-    public static <T> RpcResponse<T> fail() {
+    public static <T> RpcResponse<T> fail(String serviceAddress) {
         RpcResponse<T> rpcResponse = new RpcResponse<>();
         rpcResponse.setCode(RpcResponseCode.FAIL.getCode());
         rpcResponse.setMessage(RpcResponseCode.FAIL.getMessage());
+        rpcResponse.setServiceAddress(serviceAddress);
         return rpcResponse;
     }
 }

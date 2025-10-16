@@ -20,7 +20,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
     private static final ConcurrentHashMap<String, ConsistentSelector> selectors = new ConcurrentHashMap<>();
 
     @Override
-    protected String doSelect(List<String> serviceAddresses, RpcRequest request) {
+    protected String doSelect(List<String> serviceAddresses, RpcRequest request, String clientAddress) {
         int hashCode = System.identityHashCode(serviceAddresses);
 
         String rpcServiceName = request.getFullyExposeName();
