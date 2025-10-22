@@ -1,1 +1,2 @@
 zk=lilac.rpcframework.registry.zk.ZkServiceRegistry
+nacos=lilac.rpcframework.registry.nacos.NacosServiceRegistry

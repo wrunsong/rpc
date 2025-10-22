@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import jakarta.annotation.PreDestroy;
 import lilac.rpcframework.config.hook.ShutdownRegistryHook;
 import lilac.rpcframework.config.yaml.LoadRpcFrameworkYamlConfig;
 import lilac.rpcframework.config.yaml.field.TopYamlConfig;
@@ -35,15 +36,19 @@ public class NettyRpcServer {
     private final ServiceProvider serviceProvider = Objects.requireNonNull(
             ExtensionLoader.getExtensionLoader(ServiceProvider.class)).getExtension(registryType);
 
+
+    private NioEventLoopGroup bossGroup;
+    private NioEventLoopGroup workerGroup;
+    private DefaultEventLoopGroup handlerGroup;
     /**
      * 启动服务
      */
     public void start() {
         // clear registry
         ShutdownRegistryHook.getInstance().clearAll();
-        NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        NioEventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() / 2);
-        DefaultEventLoopGroup handlerGroup = new DefaultEventLoopGroup(
+        bossGroup = new NioEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() / 2);
+        handlerGroup = new DefaultEventLoopGroup(
                 Runtime.getRuntime().availableProcessors() / 2,
                 ThreadPoolFactory.createThreadPool("server-handler-pool")
         );
@@ -71,15 +76,25 @@ public class NettyRpcServer {
 
             ChannelFuture future = serverBootstrap.bind(RPC_SERVER_ADDRESS, RPC_SERVER_PORT).sync();
 
-            future.channel().closeFuture().sync();
+            // TODO future.channel().closeFuture().sync();在关闭spring服务时会抛异常，去掉sync就不会了
+            future.channel().closeFuture();
         } catch (Exception e) {
-            log.error("init server exception: {}", e.getMessage());
-        } finally {
+            log.error("server exception: {}", e.getMessage());
+        }
+    }
+
+    @PreDestroy
+    public void destroy() {
+        // 只在非null时进行shutdown
+        if (bossGroup != null) {
             bossGroup.shutdownGracefully();
+        }
+        if (workerGroup != null) {
             workerGroup.shutdownGracefully();
+        }
+        if (handlerGroup != null) {
             handlerGroup.shutdownGracefully();
         }
-
-
+        log.info("Netty EventLoopGroups shutdown completed.");
     }
 }

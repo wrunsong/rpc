@@ -125,6 +125,15 @@
             <version>33.4.8-jre</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba.nacos/nacos-client -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>

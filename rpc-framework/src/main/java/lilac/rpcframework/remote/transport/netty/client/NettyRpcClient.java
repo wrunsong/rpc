@@ -114,7 +114,6 @@ public class NettyRpcClient {
         CompletableFuture<RpcResponse<Object>> responseFuture = new CompletableFuture<>();
 
         try {
-            // TODO 确认一下这是不是客户端IP
             String clientAddress = InetAddress.getLocalHost().getHostAddress();
             InetSocketAddress address = registry.lookupService(request, clientAddress);
             Channel channel = getChannel(address);

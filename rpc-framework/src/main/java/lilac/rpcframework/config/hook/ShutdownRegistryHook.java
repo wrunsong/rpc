@@ -36,6 +36,7 @@ public class ShutdownRegistryHook {
 
     public void clearAll() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            log.info("shutdown registry hook");
             serviceRegistry.clearRegistry();
         }));
     }

@@ -1,1 +1,2 @@
 zk=lilac.rpcframework.provider.impl.ZkServiceProvider
+nacos=lilac.rpcframework.provider.impl.NacosServiceProvider

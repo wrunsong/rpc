@@ -14,7 +14,6 @@ public class PropertiesFileUtil {
     private PropertiesFileUtil() {}
 
     public static Properties readPropertiesFile(String fileName) {
-        // TODO 这个url是什么
         URL url = PropertiesFileUtil.class.getClassLoader().getResource("");
         String rpcConfigPath = "";
 

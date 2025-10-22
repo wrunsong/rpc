@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class CuratorUtil {
 
     private static final TopYamlConfig yamlConfig = LoadRpcFrameworkYamlConfig.loadFromYaml();
-    private static final int BASE_SLEEP_TIME = yamlConfig.getLilacRpc().getRegistry().getBaseSleepTime();
+    private static final int BASE_SLEEP_TIME = yamlConfig.getLilacRpc().getRegistry().getZk().getBaseSleepTime();
     private static final int MAX_RETRIES = yamlConfig.getLilacRpc().getRegistry().getMaxRetries();
     private static final String ZK_REGISTER_ROOT_PATH = yamlConfig.getLilacRpc().getRegistry().getZk().getPath();
     private static final String ZOOKEEPER_ADDRESS = yamlConfig.getLilacRpc().getRegistry().getAddress();

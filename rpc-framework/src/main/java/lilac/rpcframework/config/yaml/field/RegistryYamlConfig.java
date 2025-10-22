@@ -5,9 +5,9 @@ import lilac.rpcframework.factory.SingletonFactory;
 public class RegistryYamlConfig {
     private String type;
     private String address;
-    private int baseSleepTime;
     private int maxRetries;
     private ZkYamlConfig zk;
+    private NacosYamlConfig nacos;
 
     void initialize() {
 
@@ -23,23 +23,37 @@ public class RegistryYamlConfig {
                 address = "localhost:8848";  // 默认 Nacos 地址
             }
         }
-        if (baseSleepTime <= 0) {
-            baseSleepTime = 3000;  // 默认基础睡眠时间
-        }
+
         if (maxRetries <= 0) {
             maxRetries = 3;  // 默认最大重试次数
         }
 
-        if (zk != null) {
-            zk.initialize();
-        } else {
-            zk = SingletonFactory.getInstance(ZkYamlConfig.class);
+        if (this.type.equals("zk")) {
             if (zk != null) {
                 zk.initialize();
             } else {
-                System.err.println("zk is null");
+                zk = SingletonFactory.getInstance(ZkYamlConfig.class);
+                if (zk != null) {
+                    zk.initialize();
+                } else {
+                    System.err.println("zk is null");
+                }
             }
+        }  else if (this.type.equals("nacos")) {
+            if (nacos != null) {
+                nacos.initialize();
+            } else  {
+                nacos = SingletonFactory.getInstance(NacosYamlConfig.class);
+                if (nacos != null) {
+                    nacos.initialize();
+                } else  {
+                    System.err.println("nacos is null");
+                }
+            }
+        } else {
+            System.err.println("type is null");
         }
+
     }
 
     public String getType() {
@@ -58,14 +72,6 @@ public class RegistryYamlConfig {
         this.address = address;
     }
 
-    public int getBaseSleepTime() {
-        return baseSleepTime;
-    }
-
-    public void setBaseSleepTime(int baseSleepTime) {
-        this.baseSleepTime = baseSleepTime;
-    }
-
     public int getMaxRetries() {
         return maxRetries;
     }
@@ -80,5 +86,13 @@ public class RegistryYamlConfig {
 
     public void setZk(ZkYamlConfig zk) {
         this.zk = zk;
+    }
+
+    public NacosYamlConfig getNacos() {
+        return nacos;
+    }
+
+    public void setNacos(NacosYamlConfig nacos) {
+        this.nacos = nacos;
     }
 }

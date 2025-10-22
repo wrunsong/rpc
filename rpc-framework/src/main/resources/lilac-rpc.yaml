@@ -1,11 +1,17 @@
 lilac-rpc:
   registry:
-    type: zk
-    address: 127.0.0.1:2181
-    base-sleep-time: 3000
+    type: nacos
+#    address: 127.0.0.1:2181
+    address: 127.0.0.1:8848
     max-retries: 3
-    zk:
-      path: /lilac-rpc
+    nacos:
+      username: nacos
+      password: nacos
+      config-retry-time: 3
+      namespace: bee98916-a0d7-4f0a-80b8-36208c2bc8f3
+#    zk:
+#      path: /lilac-rpc
+#      base-sleep-time: 3000
   compress:
     type: gzip
     buffer-size: 4096

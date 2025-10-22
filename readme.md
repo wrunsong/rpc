@@ -12,7 +12,7 @@
 2. client和server 与spring集成 ✅
 3. 熔断
 4. 降级
-5. nacos
+5. nacos ✅
 6. kafka
 7. 负载均衡 ✅
 8. 集群
@@ -33,5 +33,6 @@
 4. 可以在@RpcService指定服务端要暴露的服务在注册中心的名字，可以在@RpcReference指定客户端要查找的服务在注册中心的名字；
 5. 用jackson读取自定义的lilac-rpc.yaml文件对rpc进行配置;
 6. 支持protobuf和hessian两种序列化方式；
-7. 用户可以在resources/extensions中已同样的方式追加SPI配置;
-8. 增加了轮询、IP哈希、最小连接数（pick-2）、最小时延（pick-2）的负载均衡方式
+7. 用户可以在resources/extensions中以同样的方式追加SPI配置;
+8. 增加了轮询、IP哈希、最小连接数（pick-2）、最小时延（pick-2）的负载均衡方式；
+9. 新增了nacos作为服务发现和注册的平台

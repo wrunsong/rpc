@@ -1,7 +1,6 @@
 package lilac.rpcframework.annotations;
 
 import lilac.rpcframework.spring.CustomScannerRegistrar;
-import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -16,6 +15,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(CustomScannerRegistrar.class)
 public @interface RpcScan {
-    // TODO 这是干嘛的呢？
     String[] scanPackages() default {};
 }

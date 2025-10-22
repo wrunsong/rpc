@@ -28,7 +28,6 @@ public class CustomScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
     private static final String RPC_SCAN_ATTRIBUTE_NAME = "scanPackages";
 
-    // TODO 什么用处？
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         CustomScannerRegistrar.resourceLoader = resourceLoader;
